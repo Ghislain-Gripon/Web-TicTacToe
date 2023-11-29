@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
+I tested my new acquired knowledge of react and implemented a feature that colors the board when the game is won by a player.
+It highlights the winning line. It also modifies the css style of the description message underneath the game board.
+
+
 Below you will find some information on how to perform common tasks.<br>
 You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
