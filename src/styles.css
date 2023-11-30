@@ -87,10 +87,31 @@ body {
 
 .status {
   margin-bottom: 10px;
+  margin-top: 20px;
+  text-align: center;
+  display: table-row;
 }
+
+.status:before {
+  clear: both;
+  content: '';
+  display: table;
+}
+
 .game {
   display: flex;
-  flex-direction: row;
+  align-items: center;
+}
+
+.button {
+  vertical-align: middle;
+  text-align: center;
+  margin-left: 50px;
+  width: 70px;
+  height: 30px;
+  font-size: 20px;
+  border-width: 2px;
+  border-color: black;
 }
 
 .game-info {

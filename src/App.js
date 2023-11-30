@@ -2,37 +2,44 @@ import React from "react";
 import { useState } from "react";
 
 export default function Board() {
-  const [player, setPlayer] = useState(true)
-  const [board, setBoard] = useState(Array(9).fill(null))
+  const [player, setPlayer] = useState(true);
+  const [board, setBoard] = useState(Array(9).fill(null));
   const players = {
     true : "X",
     false : "O"
-  }
-  let status
-  let winner = [null, []]
+  };
+  const winner = checkBoard(board);
+  let status;
+  let reset = false;
 
   function handleOnClick(order) {
       if(board[order] == null && checkBoard(board)[0] == null)
       {
-        const nextBoard = board.slice()
-        nextBoard[order] = players[player]
-        setBoard(nextBoard)
-        setPlayer(!player)
+        const nextBoard = board.slice();
+        nextBoard[order] = players[player];
+        setBoard(nextBoard);
+        setPlayer(!player);
       }
-  }
+  };
 
-  winner = checkBoard(board)
-  if(winner[0])
+  
+  if(winner && winner.some((x) => x !== 0 && x !== null))
   {
-    status = <p className="winner">{winner[0]} wins !</p>
+    status = <p className="winner">{players[player]} wins !</p>;
+    reset = true
+  }
+  else if(board.every((x) => x !== null))
+  {
+    status = "It's a draw !";
+    reset = true
   }
   else
   {
-    status = `It is ${players[player]}'s turn !`
+    status = `It is ${players[player]}'s turn !`;
   }
 
   return (
-    <div>
+    <div className="game">
       <div>
         <div className="board-row">
           <Square player={board[0]} onSquareClick={handleOnClick} order={0} alternateStyle={winner}/>
@@ -50,7 +57,12 @@ export default function Board() {
           <Square player={board[8]} onSquareClick={handleOnClick} order={8} alternateStyle={winner}/>
         </div>
       </div>
-      <div>
+      { reset && 
+          <div>
+            <button className="button" onClick={() => setBoard(Array(9).fill(null)) & setPlayer(true)}>Reset</button>
+          </div>
+      }
+      <div className="status">
         {status}
       </div>
   </div>
@@ -58,7 +70,8 @@ export default function Board() {
 }
 
 function checkBoard(board) {
-  let winner = [null, []]
+  let winner = Array(3).fill(null);
+
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -74,7 +87,11 @@ function checkBoard(board) {
     const [a, b, c] = lines[i]
     if(board[a] && board[a] === board[b] && board[b] === board[c])
     {
-      winner = [board[a], lines[i]]
+      winner = lines[i].slice()
+    }
+    if(!board[a] && i === lines.length - 1 && board.every((x) => x !== null))
+    {
+      winner = winner.fill(0)
     }
   }
 
@@ -82,7 +99,7 @@ function checkBoard(board) {
 }
 
 function Square({player, onSquareClick, order, alternateStyle}) {
-  const style = alternateStyle[1].includes(order) ? "red-square" : "blue-square"
-  const squareStyle = `square ${alternateStyle[0] ? style : ""}`
+  const style = alternateStyle && alternateStyle.includes(order) ? "red-square" : "blue-square"
+  const squareStyle = `square ${alternateStyle && alternateStyle[0] === player ? style : ""}`
   return <button className={squareStyle} onClick={() => onSquareClick(order)}>{player}</button>
 }
