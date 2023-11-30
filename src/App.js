@@ -13,7 +13,7 @@ export default function Board() {
   let reset = false;
 
   function handleOnClick(order) {
-      if(board[order] == null && checkBoard(board)[0] == null)
+      if(board[order] === null && checkBoard(board)[0] === null)
       {
         const nextBoard = board.slice();
         nextBoard[order] = players[player];
@@ -25,7 +25,7 @@ export default function Board() {
   
   if(winner && winner.some((x) => x !== 0 && x !== null))
   {
-    status = <p className="winner">{players[player]} wins !</p>;
+    status = <p className="winner">{board[winner[0]]} wins !</p>;
     reset = true
   }
   else if(board.every((x) => x !== null))
